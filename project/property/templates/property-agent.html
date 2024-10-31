@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+        <!-- Header Start -->
+        <div class="container-fluid header bg-white p-0">
+            <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+                <div class="col-md-6 p-5 mt-lg-5">
+                    <h1 class="display-5 animated fadeIn mb-4">Property Agent</h1> 
+                        <nav aria-label="breadcrumb animated fadeIn">
+                        <ol class="breadcrumb text-uppercase">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                           
+                            <li class="breadcrumb-item text-body active" aria-current="page">Property Agent</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 animated fadeIn">
+                    <img class="img-fluid" src="{% static 'img/header.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+
+        <!-- Team Start -->
+       <!-- Team Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <h1 class="mb-3">Property Agents</h1>
+            <p>Meet our registered property agents who are dedicated to helping you find the perfect property. With their expertise and local knowledge, you can trust them to guide you through the buying or renting process, ensuring a seamless experience.</p>
+        </div>
+        <div class="row g-4">
+            {% for landlord in landlords %}
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="team-item rounded overflow-hidden">
+                    <!-- <div class="position-relative">
+                        <img class="img-fluid" src="{{ landlord.profile_picture.url }}" alt="{{ landlord.get_full_name }}"> 
+                       
+                    </div> -->
+                    <div class="text-center p-4 mt-3">
+                        <h5 class="fw-bold mb-0">{{ landlord.get_full_name }}</h5> <!-- Assuming get_full_name() method -->
+                        <small>Landlord</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+        <!-- Team End -->
+
+       <!-- Call to Action Start -->
+       <div class="container-xxl py-5">
+        <div class="container">
+            <div class="bg-light rounded p-3">
+                <div class="bg-white rounded p-4" style="border: 1px dashed rgba(0, 185, 142, .3)">
+                    <div class="row g-5 align-items-center">
+                        <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                            <img class="img-fluid rounded w-100" src="{% static 'img/call-to-action.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="mb-4">
+                                <h1 class="mb-3">Contact With Our Certified Agent</h1>
+                                <p>Connect with our certified agents today to receive personalized assistance and expert advice on finding your ideal property. Your next home is just a call away.</p>
+                            </div>
+                            <a href="tel:+918318305290" class="btn btn-primary py-3 px-4 me-2"><i class="fa fa-phone-alt me-2"></i>Make A Call</a>
+                            <!-- <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Get Appoinment</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Call to Action End -->
+        
+{% endblock %}
+</body>
+
+</html>

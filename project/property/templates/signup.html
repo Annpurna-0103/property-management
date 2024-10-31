@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aashiyana Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-size: cover;
+            position: relative;
+        }
+
+       
+       
+
+        .card {
+            width: 600px;
+            margin: 60px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            /* Card shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effect */
+        }
+
+        .form-step {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow on hover */
+            transform: scale(1.05);
+            /* Slightly increase size */
+        }
+        @media (max-width: 768px) {
+        .card {
+            width: 90%; /* Occupy 90% on smaller screens */
+            min-width: 325px; /* Prevent shrinking below 325px */
+        }
+    }
+
+    .card-title {
+        color: #33c39a;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid nav-bar bg-transparent">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+            <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center text-center">
+                <div class="icon p-2 me-2">
+                    <img class="img-fluid" src="{% static 'img/icon-deal.png' %}" alt="Icon"
+                        style="width: 30px; height: 30px;">
+                </div>
+                <h1 class="m-0 text-primary">Aashiyana</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                    <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                </div>
+                <a href="{% url 'signin' %}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Complete Card Structure -->
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title text-center">Aashiyana Registration Form</h3> <br>
+            <form method="POST" action="{% url 'signup' %}" id="signupForm">
+                {% csrf_token %}
+                <div id="signup-form">
+                    <!-- First Name -->
+                    <div class="mb-3">
+                        <label for="firstName">First Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="firstName" name="first_name"
+                                placeholder="Enter your first name" maxlength="30" required>
+                        </div>
+                        <span id="firstNameError" class="text-danger">First name must be at least 3 characters long and contain only letters.</span>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="mb-3">
+                        <label for="lastName">Last Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="lastName" name="last_name"
+                                placeholder="Enter your last name" maxlength="30" required>
+                        </div>
+                        <span id="lastNameError" class="text-danger">Last name must be at least 3 characters long and contain only letters.</span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Enter your email" maxlength="40" required>
+                            <button type="button" class="btn btn-outline-secondary" id="verifyBtn"
+                                onclick="sendVerification()">Verify</button>
+                        </div>
+                        <span id="emailError" class="text-danger" style="display: none;"></span>
+                        <div id="otpSection" style="display: none;" class="mt-3">
+                            <label for="otp">Enter OTP</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="otp" placeholder="Enter OTP" maxlength="7"
+                                    required>
+                                <button type="button" class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
+                            </div>
+                            <span id="otpError" class="text-danger" style="display: none;"></span>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Create a password" maxlength="20" required>
+                            <span class="input-group-text" id="togglePassword" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="eyeIcon"></i>
+                            </span>
+                        </div>
+                        <span id="passwordError" class="text-danger">Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.</span>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-3">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirm_password"
+                                placeholder="Confirm your password" maxlength="20" required>
+                        </div>
+                        <span id="confirmPasswordError" class="text-danger">Passwords do not match.</span>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <label for="role">Select a Role</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="">Select</option>
+                                <option value="landlord">Landlord</option>
+                                <option value="tenant">Tenant</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success" onclick="submitForm()">Register</button>
+                    </div>
+
+                    <!-- Already have an account? Sign in -->
+                    <div class="text-center mt-3">
+                        <p>
+                            <i class="fas fa-user"></i> Already have an account?
+                            <a href="{% url 'signin' %}" class="text-primary">Login</a>
+                        </p>
+                       
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        // Initially hide all errors
+        document.getElementById('firstNameError').style.display = 'none';
+        document.getElementById('lastNameError').style.display = 'none';
+        document.getElementById('passwordError').style.display = 'none';
+        document.getElementById('confirmPasswordError').style.display = 'none';
+        document.getElementById('emailError').style.display = 'none';
+        document.getElementById('otpError').style.display = 'none';
+
+        // First Name Validation
+        const firstNameInput = document.getElementById('firstName');
+        const firstNameError = document.getElementById('firstNameError');
+        firstNameInput.addEventListener('input', function () {
+            validateName('firstName', 'firstNameError');
+        });
+        firstNameInput.addEventListener('blur', function () {
+            validateName('firstName', 'firstNameError');
+        });
+
+        // Last Name Validation
+        const lastNameInput = document.getElementById('lastName');
+        const lastNameError = document.getElementById('lastNameError');
+        lastNameInput.addEventListener('input', function () {
+            validateName('lastName', 'lastNameError');
+        });
+        lastNameInput.addEventListener('blur', function () {
+            validateName('lastName', 'lastNameError');
+        });
+
+        // Password Validation
+        const passwordInput = document.getElementById('password');
+        const passwordError = document.getElementById('passwordError');
+        passwordInput.addEventListener('input', function () {
+            validatePassword();
+        });
+        passwordInput.addEventListener('blur', function () {
+            validatePassword();
+        });
+
+        // Confirm Password Validation
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+        confirmPasswordInput.addEventListener('input', function () {
+            validateConfirmPassword();
+        });
+        confirmPasswordInput.addEventListener('blur', function () {
+            validateConfirmPassword();
+        });
+    });
+
+    function validateName(inputId, errorId) {
+        const nameInput = document.getElementById(inputId).value;
+        const nameRegex = /^[A-Za-z]{3,}$/;  // Only letters, minimum 3 characters
+        const errorElement = document.getElementById(errorId);
+
+        if (!nameRegex.test(nameInput)) {
+            errorElement.style.display = 'block';
+            return false;
+        } else {
+            errorElement.style.display = 'none';
+            return true;
+        }
+    }
+
+    function validatePassword() {
+        const passwordInput = document.getElementById('password').value;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordError = document.getElementById('passwordError');
+
+        if (!passwordRegex.test(passwordInput)) {
+            passwordError.style.display = 'block';
+            return false;
+        } else {
+            passwordError.style.display = 'none';
+            return true;
+        }
+    }
+
+    function validateConfirmPassword() {
+        const passwordInput = document.getElementById('password').value;
+        const confirmPasswordInput = document.getElementById('confirmPassword').value;
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+        if (passwordInput !== confirmPasswordInput) {
+            confirmPasswordError.style.display = 'block';
+            return false;
+        } else {
+            confirmPasswordError.style.display = 'none';
+            return true;
+        }
+    }
+     // Email format validation
+     function validateEmailFormat() {
+        const emailInput = document.getElementById('email').value;
+        const emailError = document.getElementById('emailError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(emailInput)) {
+            emailError.style.display = 'block';
+            emailError.textContent = 'Please enter a valid email address.';
+            return false;
+        } else {
+            emailError.style.display = 'none';
+            return true;
+        }
+    }
+
+
+    function validateForm() {
+        const isFirstNameValid = validateName('firstName', 'firstNameError');
+        const isLastNameValid = validateName('lastName', 'lastNameError');
+        const isPasswordValid = validatePassword();
+        const isConfirmPasswordValid = validateConfirmPassword();
+
+        if (isFirstNameValid && isLastNameValid && isPasswordValid && isConfirmPasswordValid) {
+            document.getElementById('signupForm').submit();
+        }
+    }
+    let emailVerified = false;  // Track email verification status
+
+// Validate Email Format
+function validateEmailFormat() {
+    const emailInput = document.getElementById('email').value;
+    const emailError = document.getElementById('emailError');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Simple email format regex
+
+    if (!emailRegex.test(emailInput)) {
+        emailError.style.display = 'block';
+        emailError.textContent = 'Please enter a valid email address.';
+        return false;
+    } else {
+        emailError.style.display = 'none';
+        return true;
+    }
+}
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                confirmPasswordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                confirmPasswordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Email verification and OTP
+        function sendVerification() {
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+
+            if (!validateEmailFormat()) {
+            return;
+        }
+           
+
+            fetch('/send-otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('otpSection').style.display = 'block';
+                    } else {
+                        emailError.textContent = 'Failed to send OTP. Try again.';
+                        emailError.style.display = 'block';
+                    }
+                });
+        }
+
+        function verifyOTP() {
+    const otp = document.getElementById('otp').value;
+    const otpError = document.getElementById('otpError');
+    const email = document.getElementById('email').value;  // Make sure to pass email as well
+
+    if (!otp) {
+        otpError.textContent = 'OTP is required.';
+        otpError.style.display = 'block';
+        return;
+    }
+    otpError.style.display = 'none';
+
+    fetch('/verify-otp/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ email: email, otp: otp })  // Send both email and otp
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Email verified successfully!');
+        } else {
+            otpError.textContent = 'Invalid OTP. Please try again.';
+            otpError.style.display = 'block';
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+function submitForm() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const emailValid = validateEmailFormat();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const role = document.getElementById('role').value;
+
+    if (!emailValid || !validateName('firstName', 'firstNameError') || !validateName('lastName', 'lastNameError') || !validatePassword() || !validateConfirmPassword()) {
+        return; // Prevent submission if validation fails
+    }
+
+    const formData = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        confirm_password: confirmPassword,
+        role: role
+    };
+
+    fetch('{% url "signup" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Log the response for debugging
+        if (data.success) {
+            alert('Registration successful!');
+            window.location.href = '{% url "signin" %}';
+        } else {
+            // Handle validation errors from server
+            alert(data.error || 'Registration failed. Please try again.');
+            // Optionally, display the specific error messages on the form
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+    </script>
+
+</body>
+
+</html>

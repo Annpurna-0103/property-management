@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- Header Start -->
+<div class="container-fluid header bg-white p-0">
+    <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+        <div class="col-md-6 p-5 mt-lg-5">
+            <h1 class="display-5 animated fadeIn mb-4">Property Grid</h1>
+            <nav aria-label="breadcrumb animated fadeIn">
+                <ol class="breadcrumb text-uppercase">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item text-body active" aria-current="page">Property List</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-6 animated fadeIn">
+            <img class="img-fluid" src="{% static 'img/header.jpg' %}" alt="">
+        </div>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Property List Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-0 gx-5 align-items-end">
+            <div class="col-lg-6">
+                <div class="text-start mx-auto mb-5 wow slideInLeft" data-wow-delay="0.1s">
+                    <h1 class="mb-3">Property Grid</h1>
+                    <p>Explore our exclusive properties available for sale and rent. Whether you're looking for a cozy home or an investment opportunity, we have something for everyone.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">All Properties</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-2">For Sale</a>
+                    </li>
+                    <li class="nav-item me-0">
+                        <a class="btn btn-outline-primary" data-bs-toggle="pill" href="#tab-3">For Rent</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-outline-primary" href="{% url 'property_list' %}">
+                            <i class="fas fa-th"></i> <!-- Replace with your grid view icon -->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <!-- All Properties -->
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div class="row">
+                    {% for property in properties %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ property.photos.url }}" class="card-img-top" alt="Property Image">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.title }}</a></h5>
+                                <p class="card-text">{{ property.description|truncatewords:15 }}</p>
+                                <p><strong>Price:</strong> {{ property.currency }} {{ property.price }}</p>
+                                <p><strong>Location:</strong> {{ property.street_address }}, {{ property.city }}, {{ property.country }}</p>
+                                <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No properties available.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                  <!-- Pagination -->
+                  <div class="d-flex justify-content-center mt-4">
+                    {% if properties.has_other_pages %}
+                        <ul class="pagination">
+                            {% if properties.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            {% for num in properties.paginator.page_range %}
+                                <li class="page-item {% if properties.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+                            {% if properties.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+
+            <!-- For Sale Properties -->
+            <div id="tab-2" class="tab-pane fade p-0">
+                <div class="row">
+                    {% for property in properties %}
+                    {% if property.category == 'for_sale' %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ property.photos.url }}" class="card-img-top" alt="Property Image">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.title }}</a></h5>
+                                <p class="card-text">{{ property.description|truncatewords:15 }}</p>
+                                <p><strong>Price:</strong> {{ property.currency }} {{ property.price }}</p>
+                                <p><strong>Location:</strong> {{ property.street_address }}, {{ property.city }}, {{ property.country }}</p>
+                                <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No properties for sale.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                 <!-- Pagination -->
+                 <div class="d-flex justify-content-center mt-4">
+                    {% if properties.has_other_pages %}
+                        <ul class="pagination">
+                            {% if properties.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            {% for num in properties.paginator.page_range %}
+                                <li class="page-item {% if properties.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+                            {% if properties.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- For Rent Properties -->
+            <div id="tab-3" class="tab-pane fade p-0">
+                <div class="row">
+                    {% for property in properties %}
+                    {% if property.category == 'for_rent' %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{ property.photos.url }}" class="card-img-top" alt="Property Image">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.title }}</a></h5>
+                                <p class="card-text">{{ property.description|truncatewords:15 }}</p>
+                                <p><strong>Price:</strong> {{ property.currency }} {{ property.price }}</p>
+                                <p><strong>Location:</strong> {{ property.street_address }}, {{ property.city }}, {{ property.country }}</p>
+                                <a href="{% url 'property_detail' property.id %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No properties for rent.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-4">
+                    {% if properties.has_other_pages %}
+                        <ul class="pagination">
+                            {% if properties.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            {% for num in properties.paginator.page_range %}
+                                <li class="page-item {% if properties.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+                            {% if properties.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.next_page_number }}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ properties.paginator.num_pages }}">Last</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Property List End -->
+
+{% endblock %}

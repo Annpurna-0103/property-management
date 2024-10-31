@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<body>
+        <!-- Header Start -->
+        <div class="container-fluid header bg-white p-0">
+            <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+                <div class="col-md-6 p-5 mt-lg-5">
+                    <h1 class="display-5 animated fadeIn mb-4">Property Type</h1> 
+                        <nav aria-label="breadcrumb animated fadeIn">
+                        <ol class="breadcrumb text-uppercase">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                          
+                            <li class="breadcrumb-item text-body active" aria-current="page">Property Type</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 animated fadeIn">
+                    <img class="img-fluid" src="{% static 'img/header.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+
+        <!-- Category Start -->
+       <!-- Category Start -->
+       <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h1 class="mb-3">Property Types</h1>
+                <p>Explore a diverse range of property types, from cozy apartments to luxurious villas. Whether you're looking for residential homes, commercial spaces, or land investments, we have a variety of options to suit your needs and preferences.</p>
+            </div>
+            <div class="row g-4">
+                {% for type in property_types %}
+                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <a class="cat-item d-block bg-light text-center rounded p-3" href="?type={{ type.name }}">
+                        <div class="rounded p-4">
+                            <div class="icon mb-3">
+                                <img class="img-fluid" src="{% static 'img/icon-apartment.png' %}" alt="Icon">
+                            </div>
+                            <h6>{{ type.name }}</h6>
+                            <span>{{ type.property_set.count }} Properties</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Category End -->
+    
+    <!-- Properties Start -->
+    <div class="container mt-5">
+        {% if selected_type %}
+            <h2 class="text-center">Properties in {{ selected_type }}</h2>
+            <div class="row g-4 justify-content-center">
+                {% if properties %}
+                    {% for property in properties %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="property-item rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href=""><img class="img-fluid" src="{{ property.photos.url }}" alt=""></a>
+                                <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.property_type.all|join:", " }}</div>
+                            </div>
+                            <div class="p-4 pb-0">
+                                <h5 class="text-primary mb-3">{{ property.currency }} {{ property.price }}</h5>
+                                <a class="d-block h5 mb-2" href="">{{ property.title }}</a>
+                                <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ property.street_address }}, {{ property.city }}, {{ property.country }}</p>
+                            </div>
+                            <!-- <div class="d-flex border-top">
+                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-ruler-combined text-primary me-2"></i>{{ property.area }} Sqft</small>
+                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-bed text-primary me-2"></i>{{ property.bedrooms }} Bed</small>
+                                <small class="flex-fill text-center py-2"><i class="fa fa-bath text-primary me-2"></i>{{ property.bathrooms }} Bath</small>
+                            </div> -->
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center">No properties found for this type.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+<!-- Properties End -->
+
+        <!-- Property List End -->
+        
+        {% endblock %}
+</body>
+
+</html>
