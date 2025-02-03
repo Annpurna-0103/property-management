@@ -5,6 +5,7 @@ pycache/
 db.sqlite3
 .env
 venv/
+
 .venv
 staticfiles/
 migrations/*.py
