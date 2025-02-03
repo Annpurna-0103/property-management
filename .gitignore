@@ -5,8 +5,7 @@ pycache/
 db.sqlite3
 .env
 venv/
-
-.venv
+.venv/
 staticfiles/
 migrations/*.py
 .DS_Store
